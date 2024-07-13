@@ -1,19 +1,16 @@
+
 {
   "name": "@repo/db",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "exports": {
-    "./client": "./src/index.ts"
-  },
+  "version": "0.0.0",
   "dependencies": {
-    "@prisma/client": "^5.16.2",
+    
     "prisma": "^5.16.2"
+  },
+  "devDependencies": {
+
+    "@prisma/client": "^5.16.2"
+    },
+  "exports": {
+      "./client": "./src/index.ts"
   }
 }
