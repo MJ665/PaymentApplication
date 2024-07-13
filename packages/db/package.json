@@ -13,6 +13,7 @@
     "./client": "./src/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "^5.16.2",
     "prisma": "^5.16.2"
   }
 }
