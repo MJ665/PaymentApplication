@@ -8,5 +8,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "exports": {
+    "./client": "./src/index.ts"
+  },
+  "dependencies": {
+    "prisma": "^5.16.2"
+  }
 }
