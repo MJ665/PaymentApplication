@@ -1,3 +1,4 @@
+// week17.2 video 
 generator client {
   provider = "prisma-client-js"
 }
