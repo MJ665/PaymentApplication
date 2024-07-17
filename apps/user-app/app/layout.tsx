@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";  // Importing Inter font from next/font/google
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { RecoilRoot } from 'recoil'; // Import RecoilRoot
 import { Providers } from "./providers";
 
-const inter = Inter({ subsets: ['latin'] });  // Defining inter with necessary subsets
+const inter = Inter({ subsets: ['latin'] });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,9 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={inter.className}>{children}</body>  {/* Applying the inter font */}
-      </Providers>
+      <body className={inter.className}>
+        <RecoilRoot> {/* Wrap the entire application in RecoilRoot */}
+          <Providers>
+            {children}
+          </Providers>
+        </RecoilRoot>
+      </body>
     </html>
   );
 }

@@ -1,10 +1,15 @@
-"use client";
+import React from 'react';
+import { useBalance } from '@repo/store/useBalance'; // Adjust the import path as necessary
 
-import { useBalance } from "@repo/store/useBalance";
-
-export default function() {
+const HelloPage = () => {
   const balance = useBalance();
-  return <div>
-    hi there {balance}
-  </div>
-}
+
+  return (
+    <div>
+      <h1>Hello Page</h1>
+      <p>Balance: {balance}</p>
+    </div>
+  );
+};
+
+export default HelloPage;

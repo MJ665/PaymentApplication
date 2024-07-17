@@ -1,9 +1,13 @@
-"use client"
-import { Children } from "react"
-import { RecoilRoot } from "recoil"
+import React from 'react';
 
-export const Providers = ({children}:{children:React.ReactNode})=>{
-    return <RecoilRoot>
-        {children}
-    </RecoilRoot>
-}
+// Add any other providers you use (like ThemeProvider, etc.)
+const Providers = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      {/* Add other providers here */}
+      {children}
+    </>
+  );
+};
+
+export { Providers };
