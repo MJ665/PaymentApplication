@@ -9,6 +9,25 @@ app.post("/hdfcWebhook", (req, res) => {
         userId: req.body.user_identifier,
         amount: req.body.amount
     };
-    
+    db.balance.update({
+        where:{
+            userId:useId
+        },
+        data:{
+            amount:{
+                increment:paymentInformation.amount
+            }
+        }
+    })
+    db.onRampTransaction.update({
+        where:{
+            token:paymentInformation.token,
+        },data:{
+            status:"Success"
+        }
+    })
+    res.status(411).json({
+        message:"captured"
+    })
     // Update balance in db, add txn
 })
