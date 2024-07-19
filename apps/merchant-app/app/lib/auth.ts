@@ -1,67 +1,52 @@
-import {client} from "@repo/db/client"
-import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google";
+import {client} from "@repo/db/client";
+import { NextAuthOptions } from "next-auth";
 
-import bcrypt from "bcrypt"
-
-
-export const authOptions = {
-    providers:[
-        CredentialsProvider({
-            name:"Credentials", 
-            credentials:{
-                phone:{label:"phone Numbert", type:"text", placeholder:"1231231231"},
-                password:{label:"Password", type:"password"}
-            },
-            // TODO : User credentials type from next auth
-            async authorize(credentials:any){
-                // TODO : do zod validation here 
-                const hashedPassword = await bcrypt.hash (credentials.password, 10)
-
-
-                const existingUser = await client.user.findFirst({
-                    where:{
-                        number :credentials.phone
-                    }
-                });
-                if(existingUser){
-                    const passwordValidation = await bcrypt.compare(credentials.password , existingUser.password)
-                    if (passwordValidation){
-                        return {
-                            id:existingUser.id.toString(), 
-                            name :existingUser.name || "hello the email not exist",
-                            email:existingUser.email || "hello Email not exist"
-                        }
-                    }
-                    return null
-                }
-                try {
-                    const user = await client.user .create({
-                        data:{
-                            number:credentials.phone,
-                            password:hashedPassword
-                        }
-                    });
-                    return {
-                        id:user.id.toString(),
-                        name :user.email, 
-                        email:user.number
-                    }
-                }catch(e){
-                    console.log(`hey we have got an error ${e}`)
-                }
-                return null
-            }
-            
-        
+export const authOptions: NextAuthOptions = {
+    providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID || "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
         })
     ],
-    secret:process.env.JWT_SECRET || "secret",
-    callbacks:{
-        // TODO :can you fis the type here ? using any is bad practice for this case
-        async session ({token , session }:any){
-            session.user.id = token.sub
+    secret: process.env.JWT_SECRET || "secret",
+    callbacks: {
+        async signIn({ user }:any) {
+            try {
+                const existingUser = await client.merchant.findUnique({
+                    where: {
+                        email: user.email
+                    }
+                });
 
-            return session
+                if (!existingUser) {
+                    await client.merchant.create({
+                        data: {
+                            name: user.name,
+                            email: user.email,
+                            auth_type: "Google"
+                        }
+                    });
+                }
+
+                // Return true to indicate successful sign-in
+                return true;
+            } catch (e) {
+                console.log(`Error during authentication with Google: ${e}`);
+                return false; // Return false to indicate an unsuccessful sign-in
+            }
+        },
+        async session({ session, token }:any) {
+            if (session.user) {
+                session.user.id = token.sub as string; // Ensure type safety
+            }
+            return session;
+        },
+        async jwt({ token, user }) {
+            if (user) {
+                token.sub = user.id as string; // Ensure type safety
+            }
+            return token;
         }
     }
-}
+};
