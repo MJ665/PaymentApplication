@@ -1,3 +1,5 @@
+'use client';  // Add this directive at the top
+
 import React from 'react';
 import { useBalance } from '@repo/store/useBalance'; // Adjust the import path as necessary
 
