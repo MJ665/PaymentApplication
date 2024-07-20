@@ -3,10 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev":"nodemon ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@repo/db": "*"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "esbuild": "^0.23.0",
+    "express": "^4.19.2"
+  }
 }
